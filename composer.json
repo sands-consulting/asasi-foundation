@@ -1,0 +1,29 @@
+{
+    "name": "sands/asasi-foundation",
+    "description": "Asasi foundation",
+    "keywords": ["asasi", "laravel", "boot"],
+    "license": "MIT",
+    "authors": [
+         {
+            "name": "Zulfa Juniadi",
+            "email": "zulfajuniadi@gmail.com",
+            "homepage": "https://github.com/zulfajuniadi"
+        },
+        {
+            "name": "Ariff Azraai",
+            "email": "ariff.azraai@gmail.com",
+            "homepage": "https://github.com/azraai"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sands\\Asasi\\Foundation\\" : "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.6.4",
+        "laravel/framework": "~5.3.0",
+        "sands/asasi-booted": "1.0.0-alpha"
+    },
+    "minimum-stability": "dev"
+}
