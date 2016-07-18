@@ -19,6 +19,7 @@ class FoundationServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootBootedTrait();
+        $this->bootValidators();
     }
 
     /**
@@ -29,17 +30,11 @@ class FoundationServiceProvider extends ServiceProvider
     public function register()
     {   
         $this->registerRoutes();
-        $this->registerValidators();
     }
 
     public function booted()
     {
         $this->bootedLanguage();
-    }
-
-    protected function bootedLanguage()
-    {
-        $this->app->setLocale(request()->cookie('locale') ?: 'en');
     }
 
     public function registerPolicy()
@@ -65,11 +60,16 @@ class FoundationServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerValidators()
+    protected function bootValidators()
     {
         $this->app->make('validator')->extend('matchesHashedPassword', function($attribute, $value, $parameters)
         {
             return $this->app->hash->check($value, $parameters[0]);
         });
+    }
+
+    protected function bootedLanguage()
+    {
+        $this->app->setLocale(request()->cookie('locale') ?: 'en');
     }
 }
