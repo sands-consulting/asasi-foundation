@@ -28,7 +28,8 @@ class FoundationServiceProvider extends ServiceProvider
      */
     public function register(Router $router)
     {   
-        $this->registerRoute($router);
+        $this->registerRoutes($router);
+        $this->registerValidators();
     }
 
     public function booted()
@@ -53,7 +54,7 @@ class FoundationServiceProvider extends ServiceProvider
     	//
     }
 
-    protected function registerRoute(Router $router)
+    protected function registerRoutes(Router $router)
     {
     	$router->group([
     		'middleware' => 'web'
@@ -61,5 +62,13 @@ class FoundationServiceProvider extends ServiceProvider
     		$path = realpath(__DIR__.'/../');
         	require "{$path}/Http/routes.php";
     	});
+    }
+
+    protected function registerValidators()
+    {
+        $this->app->validator->extend('matchesHashedPassword', function($attribute, $value, $parameters)
+        {
+            return $this->app->hash->check($value, $parameters[0]);
+        });
     }
 }
