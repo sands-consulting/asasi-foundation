@@ -45,7 +45,7 @@ class FoundationServiceProvider extends ServiceProvider
     public function registerPolicy()
     {
     	$this->app->singleton('policy', function() {
-    		return new Policy()
+    		return new Policy();
     	});
     }
 
