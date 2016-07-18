@@ -1,6 +1,6 @@
 <?php
 
-namespace Sands\Asasi\Foundation
+namespace Sands\Asasi\Foundation;
 
 use Sands\Asasi\Booted\BootedTrait;
 use Sands\Asasi\Foundation\Policy\Policy;
