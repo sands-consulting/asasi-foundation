@@ -67,7 +67,7 @@ class FoundationServiceProvider extends ServiceProvider
 
     protected function registerValidators()
     {
-        $this->app->validator->extend('matchesHashedPassword', function($attribute, $value, $parameters)
+        $this->app->make('validator')->extend('matchesHashedPassword', function($attribute, $value, $parameters)
         {
             return $this->app->hash->check($value, $parameters[0]);
         });
