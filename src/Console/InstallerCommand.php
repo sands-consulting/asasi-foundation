@@ -1,6 +1,6 @@
 <?php
 
-namespace Sands\Asasi\Foundation;
+namespace Sands\Asasi\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
