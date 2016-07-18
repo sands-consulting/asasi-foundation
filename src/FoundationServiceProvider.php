@@ -54,7 +54,7 @@ class FoundationServiceProvider extends ServiceProvider
         //
     }
 
-    protected function registerRouter()
+    protected function registerRoutes()
     {
         $this->app->router->group([
             'middleware' => 'web'
