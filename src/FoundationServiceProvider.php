@@ -12,6 +12,17 @@ class FoundationServiceProvider extends ServiceProvider
     use BootedTrait;
 
     /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {   
+        $this->registerRoutes();
+        $this->registerPolicy();
+    }
+
+    /**
      * Bootstrap the application services.
      *
      * @return void
@@ -23,15 +34,10 @@ class FoundationServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the application services.
+     * After application bootstrapped.
      *
      * @return void
      */
-    public function register()
-    {   
-        $this->registerRoutes();
-    }
-
     public function booted()
     {
         $this->bootedLanguage();
@@ -42,11 +48,6 @@ class FoundationServiceProvider extends ServiceProvider
         $this->app->singleton('policy', function() {
             return new Policy();
         });
-    }
-
-    protected function registerLanguage()
-    {
-        //
     }
 
     protected function registerRoutes()
