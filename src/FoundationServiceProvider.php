@@ -5,7 +5,7 @@ namespace Sands\Asasi\Foundation;
 use Sands\Asasi\Booted\BootedTrait;
 use Sands\Asasi\Foundation\Policy\Policy;
 use Illuminate\Routing\Router;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class FoundationServiceProvider extends ServiceProvider
 {
@@ -26,42 +26,43 @@ class FoundationServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register(Router $router)
+    public function register();
     {   
-        $this->registerRoutes($router);
+        $this->registerRoutes();
         $this->registerValidators();
     }
 
     public function booted()
     {
-    	$this->bootedLanguage();
+        $this->bootedLanguage();
     }
 
     protected function bootedLanguage()
     {
-    	$this->app->setLocale(request()->cookie('locale') ?: 'en');
+        $this->app->setLocale(request()->cookie('locale') ?: 'en');
     }
 
     public function registerPolicy()
     {
-    	$this->app->singleton('policy', function() {
-    		return new Policy();
-    	});
+        $this->app->singleton('policy', function() {
+            return new Policy();
+        });
     }
 
     protected function registerLanguage()
     {
-    	//
+        //
     }
 
-    protected function registerRoutes(Router $router)
+    protected function registerRouter()
     {
-    	$router->group([
-    		'middleware' => 'web'
-    	], function ($router) {
-    		$path = realpath(__DIR__.'/../');
-        	require "{$path}/Http/routes.php";
-    	});
+        $this->app->router->group([
+            'middleware' => 'web'
+        ], function ($router) {
+            $router->Get('set/{locale}', ['as' => 'locale', function($locale) {
+                return redirect()->back()->withCookie(cookie()->forever('locale', $locale));
+            }]);
+        });
     }
 
     protected function registerValidators()
