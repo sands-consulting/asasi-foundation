@@ -2,13 +2,20 @@
 
 namespace Sands\Asasi\Foundation\Policy;
 
+use Illuminate\Contracts\Auth\Guard;
 use Sands\Asasi\Foundation\Policy\Exceptions\PolicyDoesNotExists;
 use Sands\Asasi\Foundation\Policy\Exceptions\PolicyMethodDoesNotExists;
 
 class Policy
 {
+    protected $auth;
     protected $policies = [];
     private $cached     = [];
+
+    public function __construct(Guard $auth)
+    {
+        $this->auth = $auth;
+    }
 
     public function check($controller, $action, $parameters = [])
     {
@@ -41,7 +48,7 @@ class Policy
     protected function getPolicy($controller)
     {
         if (!isset($this->cached[$controller])) {
-            $this->cached[$controller] = new $this->policies[$controller]();
+            $this->cached[$controller] = new $this->policies[$controller]($this->auth);
         }
         return $this->cached[$controller];
     }

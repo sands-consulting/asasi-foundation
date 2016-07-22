@@ -19,7 +19,6 @@ class FoundationServiceProvider extends ServiceProvider
     public function register()
     {   
         $this->registerRoutes();
-        $this->registerPolicy();
     }
 
     /**
@@ -31,6 +30,7 @@ class FoundationServiceProvider extends ServiceProvider
     {
         $this->bootBootedTrait();
         $this->bootValidators();
+        $this->bootPolicy();
     }
 
     /**
@@ -41,13 +41,6 @@ class FoundationServiceProvider extends ServiceProvider
     public function booted()
     {
         $this->bootedLanguage();
-    }
-
-    public function registerPolicy()
-    {
-        $this->app->singleton('policy', function() {
-            return new Policy();
-        });
     }
 
     protected function registerRoutes()
@@ -61,9 +54,16 @@ class FoundationServiceProvider extends ServiceProvider
         });
     }
 
+    public function bootPolicy()
+    {
+        $this->app->singleton('policy', function() {
+            return new Policy($this->app->auth->guard());
+        });
+    }
+
     protected function bootValidators()
     {
-        $this->app->make('validator')->extend('matchesHashedPassword', function($attribute, $value, $parameters)
+        $this->app->validator->extend('matchesHashedPassword', function($attribute, $value, $parameters)
         {
             return $this->app->hash->check($value, $parameters[0]);
         });
