@@ -19,6 +19,7 @@ class Policy
 
     public function check($controller, $action, $parameters = [])
     {
+        $user       = $this->auth->user;
         $parameters = $parameters ?: [];
 
         if (!isset($this->policies[$controller])) {
@@ -30,7 +31,7 @@ class Policy
             throw new PolicyMethodDoesNotExists($controller, $action);
         }
 
-        return call_user_func_array([$handler, $action], $parameters);
+        return call_user_func_array([$handler, $action], array_merge([$user], $parameters));
     }
 
     public function checkCurrentRoute()
